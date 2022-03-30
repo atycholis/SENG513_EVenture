@@ -1,25 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+/*Defines different paths in the URL we want to listen to & which component should be loaded for these different paths */
+import { Routes, Route } from "react-router-dom";
+//import LoginPage from "./pages/Login";
+import AllMeetupsPage from "./pages/AllMeetups";
+import NewMeetupsPage from "./pages/NewMeetups";
+import FavActivities from "./pages/FavActivities";
+import MainNavigation from "./components/layout/MainNavigation";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+        <MainNavigation />
+        <Routes>
+            <Route path={'/'} element={<AllMeetupsPage />}/>
+            <Route path={'/new-meetup'} element={<NewMeetupsPage />}/>
+            <Route path={'/favorites'} element={<FavActivities />}/>
+        </Routes>
     </div>
   );
 }
+
+/*<Route path={'/new-meetup'}>
+        <NewMeetupsPage />
+      </Route>
+      <Route path={'/favorites'}>
+          <FavActivities />
+      </Route>*/
 
 export default App;
