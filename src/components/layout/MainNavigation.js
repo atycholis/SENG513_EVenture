@@ -8,10 +8,10 @@ function MainNavigation() {
             <nav>
                 <ul>
                     <li>
-                        <Link to={'/'}>All Meetups</Link>
+                        <Link to={'/'}>Discover</Link>
                     </li>
                     <li>
-                        <Link to={'/new-meetup'}>New Meetup</Link>
+                        <Link to={'/friends'}>Friends</Link>
                     </li>
                     <li>
                         <Link to={'/favorites'}>Favorites</Link>
