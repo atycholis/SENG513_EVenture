@@ -1,11 +1,13 @@
 import classes from './LoginModal.module.css'
-import {useState} from "react";
+import React from "react"
 
 function LoginModal(props){
-    const [ value, setValue ] = useState(true);
+    let textInput = React.createRef();
 
     function confirmHandler(){
         props.onLogin();
+        //FOR BACKEND - username from UI
+        console.log(textInput.current.value);
     }
 
     return(
@@ -23,7 +25,7 @@ function LoginModal(props){
                 <p className={classes.p}>Enjoy an event that everyone can get on board with! Meet again next week?</p>
             </div>
             <p className={classes.text}>Enter Username</p>
-            <input autoComplete="off"/><button onClick={confirmHandler}>Login</button>
+            <input ref={textInput} autoComplete={'off'}/><button onClick={confirmHandler}>Login</button>
         </div>
     )
 }
