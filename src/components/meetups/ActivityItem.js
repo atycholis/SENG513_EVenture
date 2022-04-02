@@ -1,7 +1,22 @@
 import classes from './ActivityItem.module.css'
 import Card from '../ui/Card'
 
+function addToFavourites(activity, id)
+{
+    if(document.getElementById(id).innerText==="To Favorites")
+    {    
+        alert ("Added " + activity + " to favorites.");
+        document.getElementById(id).innerText="Remove Favorite";
+    }
+    else
+    {
+        alert ("Removed " + activity + " from favorites.");
+        document.getElementById(id).innerText="To Favorites";
+    }
+}
+
 function ActivityItem(props){
+    let buttonText = "To Favorites";
     return (
         <li className={classes.item}>
             <Card>
@@ -14,7 +29,7 @@ function ActivityItem(props){
                     <p>{props.description}</p>
                 </div>
                 <div className={classes.actions}>
-                    <button>To Favorites</button>
+                    <button id={props.id} onClick={() => {addToFavourites(props.title, props.id)}}>{buttonText}</button>
                 </div>
             </Card>
         </li>
