@@ -4,11 +4,11 @@ import classes from './MainNavigation.module.css'
 function MainNavigation() {
     return (
         <header className={classes.header}>
-            <div className={classes.logo}>EVenture</div>
+            <div className={classes.logo}>eVenture</div>
             <nav>
                 <ul>
                     <li>
-                        <Link to={'/'}>Discover</Link>
+                        <Link to={'/discover'}>Discover</Link>
                     </li>
                     <li>
                         <Link to={'/friends'}>Friends</Link>

@@ -6,11 +6,12 @@ import FavActivities from "./pages/FavActivities";
 import Layout from './components/layout/Layout'
 
 function App() {
+
   return (
     <Layout>
         <Routes>
-            <Route path={'/'} element={<AllActivitiesPage />}/>
-            <Route path={'/login'} element={<LoginPage />}/>
+            <Route path={'/'} element={<LoginPage />}/>
+            <Route path={'/discover'} element={<AllActivitiesPage />}/>
             <Route path={'/favorites'} element={<FavActivities />}/>
         </Routes>
     </Layout>
