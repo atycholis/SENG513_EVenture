@@ -11,10 +11,11 @@
     left: calc(50% - 15rem);
 }
 
-.text {
+.modal_text {
     color: #dfdfdf;
 }
 
 .p {
-    font-size: 11px;
+    color: #dfdfdf;
+    font-size: 10px;
 }

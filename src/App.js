@@ -6,6 +6,7 @@ import FavActivities from "./pages/FavActivities";
 import Layout from './components/layout/Layout'
 
 function App() {
+
   return (
     <Layout>
         <Routes>

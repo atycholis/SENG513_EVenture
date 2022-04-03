@@ -1,6 +1,7 @@
 /*All activities*/
 import ActivityList from "../components/meetups/ActivityList";
 
+//TO BE REPLACED BY DATA FROM BE
 const DUMMY_DATA = [{
     id: 'm1',
     title: 'The Batman',
