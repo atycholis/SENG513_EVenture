@@ -1,8 +1,8 @@
 const MongoClient = require('mongodb').MongoClient;
 
 // Takes in username and returns full user obj as promise.
-// USAGE: *IN ASYNC FUNCTION* const result = getUser('<username>').then(result => result);
-async function getUser(username) {
+// USAGE: *IN ASYNC FUNCTION* const result = getUser('<username>')
+export async function getUser(username) {
   const client = new MongoClient(
     'mongodb+srv://SENG:513@cluster0.a7uvh.mongodb.net/test');
   try {
@@ -18,8 +18,8 @@ async function getUser(username) {
 }
 
 // Takes in username and returns activities liked and disliked as obj as promise.
-// USAGE: *IN ASYNC FUNCTION* const result = getUser('<username>').then(result => result);
-async function getAllActivities(username) {
+// USAGE: *IN ASYNC FUNCTION* const result = getUser('<username>')
+export async function getAllActivities(username) {
   const client = new MongoClient(
     'mongodb+srv://SENG:513@cluster0.a7uvh.mongodb.net/test', {
       useNewUrlParser: true,
@@ -39,20 +39,20 @@ async function getAllActivities(username) {
     }, {
       '$lookup': {
         'from': 'activities',
-        'localField': 'likedActivities',
+        'localField': 'activities.likedActivities',
         'foreignField': 'id',
         'as': 'likedActivityArray'
       }
     }, {
       '$lookup': {
         'from': 'activities',
-        'localField': 'dislikedActivities',
+        'localField': 'activities.dislikedActivities',
         'foreignField': 'id',
         'as': 'dislikedActivityArray'
       }
     }, {
       '$unset': [
-        '_id', 'id', 'username', 'likedActivities', 'dislikedActivities'
+        '_id', 'id', 'username', 'activities', 'friends'
       ]
     }, ]).toArray();
 
@@ -65,7 +65,8 @@ async function getAllActivities(username) {
 // Takes in username, activityID and activityEvaluation and sets the user information in the DB accordingly
 // Function covers case where activityID already exists.
 // USAGE: setActivityEval('string <username> ', <activityID>, bool<activityEval>);
-async function setUserActivityEval(username, activityID, activityEval) {
+// Returns liked and dislike activities
+export async function setUserActivityEval(username, activityID, activityEval) {
   const client = new MongoClient(
     'mongodb+srv://SENG:513@cluster0.a7uvh.mongodb.net/test');
   try {
@@ -76,24 +77,24 @@ async function setUserActivityEval(username, activityID, activityEval) {
       'username': username
     });
 
-    for (element in userInfo.likedActivities) {
-      if (userInfo.likedActivities[element] == activityID) {
+    for (element in userInfo.activities.likedActivities) {
+      if (userInfo.activities.likedActivities[element] == activityID) {
         await usersCollection.updateOne({
           'username': username
         }, {
           $pull: {
-            'likedActivities': userInfo.likedActivities[element]
+            'activities.likedActivities': userInfo.activities.likedActivities[element]
           }
         });
       }
     };
-    for (element in userInfo.dislikedActivities) {
-      if (userInfo.dislikedActivities[element] == activityID) {
+    for (element in userInfo.activities.dislikedActivities) {
+      if (userInfo.activities.dislikedActivities[element] == activityID) {
         await usersCollection.updateOne({
           'username': username
         }, {
           $pull: {
-            'dislikedActivities': userInfo.dislikedActivities[element]
+            'activities.dislikedActivities': userInfo.activities.dislikedActivities[element]
           }
         });
       }
@@ -103,7 +104,7 @@ async function setUserActivityEval(username, activityID, activityEval) {
         'username': username
       }, {
         $push: {
-          'likedActivities': activityID
+          'activities.likedActivities': activityID
         }
       });
     } else if (!activityEval) {
@@ -111,20 +112,23 @@ async function setUserActivityEval(username, activityID, activityEval) {
         'username': username
       }, {
         $push: {
-          'dislikedActivities': activityID
+          'activities.dislikedActivities': activityID
         }
       });
     }
-
+    return await usersCollection.findOne({
+      'username': username
+    })
   } finally {
     await client.close();
   }
+
 }
 
 // Takes in username, creates new user
 // throws error if username already exists
 //USAGE: addUser('<username>');
-async function addUser(username) {
+export async function addUser(username) {
   const client = new MongoClient(
     'mongodb+srv://SENG:513@cluster0.a7uvh.mongodb.net/test');
   try {
@@ -136,7 +140,7 @@ async function addUser(username) {
     }).hasNext();
 
     if (exists)
-      throw console.error('\USERNAME TAKEN\n');
+      throw '\nUSERNAME TAKEN\n';
     else {
       var index = await usersCollection.count();
       await usersCollection.insertOne({
@@ -146,6 +150,46 @@ async function addUser(username) {
         "dislikedActivities": []
       })
     }
+  } catch (err) {
+    console.log(err);
+    return false
+
+  } finally {
+    await client.close();
+  }
+}
+
+// Takes in username and friendUsername and adds to list of friends for that user
+// TO USE: addToFriendsList('<username>', '<username of friend>')
+export async function addTOFriendsList(username, friendUsername) {
+  const client = new MongoClient(
+    'mongodb+srv://SENG:513@cluster0.a7uvh.mongodb.net/test');
+  try {
+    await client.connect();
+    const database = client.db("513");
+    const usersCollection = database.collection("users");
+    if (await usersCollection.findOne({
+        $and: [{
+          username: username
+        }, {
+          'friends.friendsList': {
+            $nin: [friendUsername]
+          }
+        }]
+      })) {
+      return await usersCollection.updateOne({
+        username: username
+      }, {
+        $push: {
+          'friends.friendsList': friendUsername
+        }
+      })
+    } else {
+      throw "FRIEND ALREADY EXISTS"
+    }
+  } catch (err) {
+    console.log(err);
+    return false
   } finally {
     await client.close();
   }
@@ -157,31 +201,45 @@ async function addUser(username) {
 //example async func that displays user info based on username
 async function runGetUser(username) {
   const result = await getUser(username)
-    .then(result => result);
+  console.log("\ngetUser...");
   console.log(result);
 }
 
 //example async func that displays activity id info based on username
 async function runGetAllActivities(username) {
   const result = await getAllActivities(username)
-    .then(result => result[0]);
-  console.log(result);
+  console.log("\ngetAllActivities...");
+  console.log(result[0]);
 }
 
 //example call that updates users activity preference in the db
-function runSetActivity(username, activityID, activityEval) {
-  setUserActivityEval(username, activityID, activityEval);
+async function runSetActivity(username, activityID, activityEval) {
+  const result = await setUserActivityEval(username, activityID, activityEval)
+  console.log("\nsetUserActivityEval...");
+  console.log(result.activities);
 }
 
 //example call that adds a new user into the db
-function runAddUser(username) {
-  addUser(username);
+async function runAddUser(username) {
+  const result = await addUser(username)
+  console.log("\naddUser...");
+  console.log(result);
+
 }
+
+//example call that adds a friend to a users addToFriendsList
+async function runAddFriend(username, friendUsername) {
+  const result = await addTOFriendsList(username, friendUsername);
+  console.log("\naddFriend...");
+  console.log(result);
+}
+
 
 //////////////////////TO RUN: node helperDB.js//////////////////////////
 //uncomment below to test
 
-//runGetUser('Brandon');
-//runGetAllActivities('Brandon');
-//runSetActivity('Brandon', 5, true);
-//runAddUser('Annelyse');
+runGetUser('Brandon');
+runGetAllActivities('Brandon');
+runSetActivity('Brandon', 5, true);
+runAddUser('Annelyse');
+runAddFriend('Tarnished', 'Annelyse');
