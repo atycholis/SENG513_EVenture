@@ -1,7 +1,11 @@
 const MongoClient = require('mongodb').MongoClient;
 
+
+
+
 // Takes in username and returns full user obj as promise.
-// USAGE: *IN ASYNC FUNCTION* const result = getUser('<username>')
+// USAGE: getUser('<username>')
+// Returns user object
 async function getUser(username) {
   const client = new MongoClient(
     'mongodb+srv://SENG:513@cluster0.a7uvh.mongodb.net/test');
@@ -17,8 +21,9 @@ async function getUser(username) {
   }
 }
 
-// Takes in username and returns activities liked and disliked as obj as promise.
-// USAGE: *IN ASYNC FUNCTION* const result = getUser('<username>')
+// Takes in username and returns activities liked and disliked
+// USAGE: getAllActivities('<username>')
+// returns array of activities
 async function getAllActivities(username) {
 
   const client = new MongoClient(
@@ -66,8 +71,7 @@ async function getAllActivities(username) {
 // Takes in username, activityID and activityEvaluation and sets the user information in the DB accordingly
 // Function covers case where activityID already exists.
 // USAGE: setActivityEval('string <username> ', <activityID>, bool<activityEval>);
-// Returns liked and dislike activities
-
+// Returns userobj
 async function setUserActivityEval(username, activityID, activityEval) {
   const client = new MongoClient(
     'mongodb+srv://SENG:513@cluster0.a7uvh.mongodb.net/test');
@@ -124,7 +128,6 @@ async function setUserActivityEval(username, activityID, activityEval) {
   } finally {
     await client.close();
   }
-
 }
 
 // Takes in username, creates new user
@@ -162,7 +165,6 @@ async function addUser(username) {
 }
 
 // Takes in username and friendUsername and adds to list of friends for that user
-
 // also adds username to friends list of friendUsername
 // Creates a new chat document between the 2 users
 // TO USE: addToFriendsList('<username>', '<username of friend>')
@@ -254,7 +256,6 @@ async function getChat(username, friendUsername) {
   }
 }
 
-
 // Takes 2 usernames, one who sent the request and one who the request was sent
 // and adds requester to friendRequests[]
 // TO USE: sendFriendRequest('<username of requester>', '<username of receiver>')
@@ -286,7 +287,6 @@ async function sendFriendRequest(fromUser, toUser) {
     await client.close();
   }
 }
-
 
 // Takes 2 usernames, the user who is accepting the request and username to be accepted
 // and removes receiver to friendRequests[]
@@ -320,12 +320,10 @@ async function acceptFriendRequest(username, userToAccept) {
   }
 }
 
-
-// Takes 2 usernames and a message. Stores message in the chats collection'
+// Takes 2 usernames and a message. Stores message in the chats collection
 // SHOULD ONLY BE USED BETWEEN FRIENDS
 // TO USE: sendChat('<username of sender>', '<username of receiver>', '<message>')
 // returns object containing assertion of success
-
 async function sendChat(sentBy, sentTo, message) {
   const client = new MongoClient(
     'mongodb+srv://SENG:513@cluster0.a7uvh.mongodb.net/test');
@@ -355,7 +353,7 @@ async function sendChat(sentBy, sentTo, message) {
         chat: {
           $each: [{
             date: new Date(),
-            sentBy: sentTo,
+            sentBy: sentBy,
             message: message
           }],
           $sort: {
@@ -368,6 +366,8 @@ async function sendChat(sentBy, sentTo, message) {
     await client.close();
   }
 }
+
+
 
 //////////////////////////////////////////////////////////////////////////
 ///////////////////////////// EXAMPLE CODE ///////////////////////////////
@@ -395,7 +395,6 @@ async function getDB() {
     await client.close();
   }
 }
-
 
 //example async func that displays user info based on username
 async function runGetUser(username) {
@@ -432,6 +431,7 @@ async function runAddFriend(username, friendUsername) {
   console.log("\naddFriend...");
   console.log(result);
 }
+
 //example call that gets chat from 2 users
 async function runGetChat(username, friendUsername) {
   const result = await getChat(username, friendUsername);
@@ -445,13 +445,13 @@ async function runSendFriendRequest(fromUser, toUser) {
   console.log("\nsendFriendRequest...");
   console.log(result);
 }
+
 //example call that accepts friend request
 async function runAcceptFriendRequest(username, userToAccept) {
   const result = await acceptFriendRequest(username, userToAccept);
   console.log("\acceptFriendRequest...");
   console.log(result);
 }
-
 
 //example call that sends a message to a friends
 async function runSendChat(sentBy, sentTo, message) {
@@ -462,13 +462,13 @@ async function runSendChat(sentBy, sentTo, message) {
 
 //////////////////////TO RUN: node helperDB.js//////////////////////////
 //uncomment below to test
+
 // getDB();
 // runGetUser('Brandon');
 // runGetAllActivities('Brandon');
 // runSetActivity('Brandon', 5, true);
-// runAddUser('Annelyse');
 // runAddFriend('Annelyse', 'Brandon');
 // runGetChat('Annelyse', 'Brandon');
-// runSendFriendRequest('Gary', 'Brandon');
-// runAcceptFriendRequest('Brandon', 'Gary');
-// runSendChat('Gary', 'Brandon', 'You are neat');
+// runSendFriendRequest('Annelyse', 'Gary');
+// runAcceptFriendRequest('Gary', 'Annelyse');
+// runSendChat('Gary', 'Annelyse', 'Who are you');
