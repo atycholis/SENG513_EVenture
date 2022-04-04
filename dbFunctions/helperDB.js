@@ -16,9 +16,11 @@ async function getUser(username) {
     await client.close();
   }
 }
+
 // Takes in username and returns activities liked and disliked as obj as promise.
 // USAGE: *IN ASYNC FUNCTION* const result = getUser('<username>')
 async function getAllActivities(username) {
+
   const client = new MongoClient(
     'mongodb+srv://SENG:513@cluster0.a7uvh.mongodb.net/test', {
       useNewUrlParser: true,
@@ -65,6 +67,7 @@ async function getAllActivities(username) {
 // Function covers case where activityID already exists.
 // USAGE: setActivityEval('string <username> ', <activityID>, bool<activityEval>);
 // Returns liked and dislike activities
+
 async function setUserActivityEval(username, activityID, activityEval) {
   const client = new MongoClient(
     'mongodb+srv://SENG:513@cluster0.a7uvh.mongodb.net/test');
@@ -159,6 +162,7 @@ async function addUser(username) {
 }
 
 // Takes in username and friendUsername and adds to list of friends for that user
+
 // also adds username to friends list of friendUsername
 // Creates a new chat document between the 2 users
 // TO USE: addToFriendsList('<username>', '<username of friend>')
@@ -197,6 +201,7 @@ async function addToFriendsList(username, friendUsername) {
         $push: {
           'friends.friendsList': friendUsername
         }
+
       }) && await usersCollection.updateOne({
         username: friendUsername
       }, {
@@ -204,6 +209,7 @@ async function addToFriendsList(username, friendUsername) {
           'friends.friendsList': username
         }
       }))
+
     } else {
       throw "FRIEND ALREADY EXISTS"
     }
@@ -279,6 +285,7 @@ async function sendFriendRequest(fromUser, toUser) {
     await client.close();
   }
 }
+
 //////////////////////////////////////////////////////////////////////////
 ///////////////////////////// EXAMPLE CODE ///////////////////////////////
 //////////////////////////////////////////////////////////////////////////
@@ -331,7 +338,6 @@ async function runSendFriendRequest(fromUser, toUser) {
   console.log(result);
 }
 
-
 //////////////////////TO RUN: node helperDB.js//////////////////////////
 //uncomment below to test
 
@@ -341,4 +347,5 @@ async function runSendFriendRequest(fromUser, toUser) {
 // runAddUser('Annelyse');
 // runAddFriend('Annelyse', 'Brandon');
 // runGetChat('Annelyse', 'Brandon');
-runSendFriendRequest('Tarnished', 'Brandon');
+//runSendFriendRequest('Tarnished', 'Brandon');
+
