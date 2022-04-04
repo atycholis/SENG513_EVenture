@@ -2,7 +2,7 @@ const MongoClient = require('mongodb').MongoClient;
 
 // Takes in username and returns full user obj as promise.
 // USAGE: *IN ASYNC FUNCTION* const result = getUser('<username>')
-export async function getUser(username) {
+async function getUser(username) {
   const client = new MongoClient(
     'mongodb+srv://SENG:513@cluster0.a7uvh.mongodb.net/test');
   try {
@@ -16,10 +16,9 @@ export async function getUser(username) {
     await client.close();
   }
 }
-
 // Takes in username and returns activities liked and disliked as obj as promise.
 // USAGE: *IN ASYNC FUNCTION* const result = getUser('<username>')
-export async function getAllActivities(username) {
+async function getAllActivities(username) {
   const client = new MongoClient(
     'mongodb+srv://SENG:513@cluster0.a7uvh.mongodb.net/test', {
       useNewUrlParser: true,
@@ -66,7 +65,7 @@ export async function getAllActivities(username) {
 // Function covers case where activityID already exists.
 // USAGE: setActivityEval('string <username> ', <activityID>, bool<activityEval>);
 // Returns liked and dislike activities
-export async function setUserActivityEval(username, activityID, activityEval) {
+async function setUserActivityEval(username, activityID, activityEval) {
   const client = new MongoClient(
     'mongodb+srv://SENG:513@cluster0.a7uvh.mongodb.net/test');
   try {
@@ -128,7 +127,7 @@ export async function setUserActivityEval(username, activityID, activityEval) {
 // Takes in username, creates new user
 // throws error if username already exists
 //USAGE: addUser('<username>');
-export async function addUser(username) {
+async function addUser(username) {
   const client = new MongoClient(
     'mongodb+srv://SENG:513@cluster0.a7uvh.mongodb.net/test');
   try {
@@ -160,14 +159,18 @@ export async function addUser(username) {
 }
 
 // Takes in username and friendUsername and adds to list of friends for that user
+// also adds username to friends list of friendUsername
+// Creates a new chat document between the 2 users
 // TO USE: addToFriendsList('<username>', '<username of friend>')
-export async function addTOFriendsList(username, friendUsername) {
+// Returns updateOne return Object if successful, otherwise returns false
+async function addToFriendsList(username, friendUsername) {
   const client = new MongoClient(
     'mongodb+srv://SENG:513@cluster0.a7uvh.mongodb.net/test');
   try {
     await client.connect();
     const database = client.db("513");
     const usersCollection = database.collection("users");
+    const chatCollection = database.collection("chats");
     if (await usersCollection.findOne({
         $and: [{
           username: username
@@ -177,13 +180,30 @@ export async function addTOFriendsList(username, friendUsername) {
           }
         }]
       })) {
-      return await usersCollection.updateOne({
+      newChatID = await chatCollection.count();
+      await chatCollection.insertOne({
+        'id': newChatID,
+        'user1': username,
+        'user2': friendUsername,
+        'chat': [{
+          'date': new Date(),
+          'sentBy': "",
+          'message': ""
+        }]
+      });
+      return (await usersCollection.updateOne({
         username: username
       }, {
         $push: {
           'friends.friendsList': friendUsername
         }
-      })
+      }) && await usersCollection.updateOne({
+        username: friendUsername
+      }, {
+        $push: {
+          'friends.friendsList': username
+        }
+      }))
     } else {
       throw "FRIEND ALREADY EXISTS"
     }
@@ -195,6 +215,70 @@ export async function addTOFriendsList(username, friendUsername) {
   }
 }
 
+// Takes in 2 usernames and gets the chat between the two usernames
+// TO USE: getChat('<username>', '<username of friend>')
+// Returns array of chat objects
+async function getChat(username, friendUsername) {
+  const client = new MongoClient(
+    'mongodb+srv://SENG:513@cluster0.a7uvh.mongodb.net/test');
+  try {
+    await client.connect();
+    const database = client.db("513");
+    const chatCollection = database.collection("chats");
+    const chatObj = await chatCollection.findOne({
+      $or: [{
+          $and: [{
+            'user1': username
+          }, {
+            'user2': friendUsername
+          }]
+        },
+        {
+          $and: [{
+            'user1': friendUsername
+          }, {
+            'user2': username
+          }]
+        }
+      ]
+    });
+    return chatObj.chat;
+  } finally {
+    await client.close();
+  }
+}
+
+
+// Takes 2 usernames, one who sent the request and one who the request was sent
+//TO USE: sendFriendRequest('<username of requester>', '<username of receiver>')
+//
+async function sendFriendRequest(fromUser, toUser) {
+  const client = new MongoClient(
+    'mongodb+srv://SENG:513@cluster0.a7uvh.mongodb.net/test');
+  try {
+    await client.connect();
+    const database = client.db("513");
+    const userCollection = database.collection("users");
+    return await userCollection.findOneAndUpdate({
+      $and: [{
+        'username': toUser
+      }, {
+        'friends.friendRequests': {
+          $nin: [
+            fromUser
+          ]
+        }
+      }]
+    }, {
+      $push: {
+        'friends.friendRequests': fromUser
+      }
+    })
+
+  } finally {
+    await client.close();
+  }
+}
 //////////////////////////////////////////////////////////////////////////
 ///////////////////////////// EXAMPLE CODE ///////////////////////////////
 //////////////////////////////////////////////////////////////////////////
@@ -229,8 +313,21 @@ async function runAddUser(username) {
 
 //example call that adds a friend to a users addToFriendsList
 async function runAddFriend(username, friendUsername) {
-  const result = await addTOFriendsList(username, friendUsername);
+  const result = await addToFriendsList(username, friendUsername);
   console.log("\naddFriend...");
+  console.log(result);
+}
+//example call that gets chat from 2 users
+async function runGetChat(username, friendUsername) {
+  const result = await getChat(username, friendUsername);
+  console.log("\ngetChat...");
+  console.log(result);
+}
+
+//example call that sends a friend request
+async function runSendFriendRequest(fromUser, toUser) {
+  const result = await sendFriendRequest(fromUser, toUser);
+  console.log("\nsendFriendRequest...");
   console.log(result);
 }
 
@@ -238,8 +335,10 @@ async function runAddFriend(username, friendUsername) {
 //////////////////////TO RUN: node helperDB.js//////////////////////////
 //uncomment below to test
 
-runGetUser('Brandon');
-runGetAllActivities('Brandon');
-runSetActivity('Brandon', 5, true);
-runAddUser('Annelyse');
-runAddFriend('Tarnished', 'Annelyse');
+// runGetUser('Brandon');
+// runGetAllActivities('Brandon');
+// runSetActivity('Brandon', 5, true);
+// runAddUser('Annelyse');
+// runAddFriend('Annelyse', 'Brandon');
+// runGetChat('Annelyse', 'Brandon');
+runSendFriendRequest('Tarnished', 'Brandon');
