@@ -39,3 +39,21 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
+## Running the DB
+Steps for MongoDB:
+
+Download and install mongo @ https://www.mongodb.com/try/download/community
+Install Mongo by clicking next through the prompts, Agree to mongo Compass. (UI for mongoDB)
+Then, from your shell, clone the js-starter repository:
+
+### `git clone --branch v4.4 https://github.com/mongodb-university/js-starter.git`
+
+### `cd js-starter`
+### `npm install`
+
+Open Mongo Compass that you installed earlier
+You can connect to the database by using:
+mongodb+srv://SENG:513>@cluster0.a7uvh.mongodb.net/test
+in Mongo Compass.
+
+(If prompted for username and password, Username: SENG || Password: 513)
