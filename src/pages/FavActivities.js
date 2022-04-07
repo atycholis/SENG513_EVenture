@@ -1,5 +1,5 @@
 /*Fav activities*/
-import FavActivityList from "../components/meetups/FavActivityList";
+import FavActivityList from "../components/activities/FavActivityList";
 
 const DUMMY_DATA = [{
     id: 'm1',
