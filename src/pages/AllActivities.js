@@ -1,5 +1,5 @@
 /*All activities*/
-import ActivityList from "../components/meetups/ActivityList";
+import ActivityList from "../components/activities/ActivityList";
 import { io } from "socket.io-client";
 
 let socket = io('https://localhost:3001');
