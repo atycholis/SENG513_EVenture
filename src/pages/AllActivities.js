@@ -1,5 +1,12 @@
 /*All activities*/
 import ActivityList from "../components/meetups/ActivityList";
+import { io } from "socket.io-client";
+
+let socket = io('https://localhost:3001');
+
+/*socket.on('get-new-activity-response', (activityList) =>{
+    //TO DO store activity list in a const similar to dummy data to be displayed on discover page
+});*/
 
 //TO BE REPLACED BY DATA FROM BE
 const DUMMY_DATA = [{
@@ -23,6 +30,9 @@ const DUMMY_DATA = [{
 
 /*Page loaded by router*/
 function AllActivitiesPage(){
+    //Request for activity list to be displayed on discover page
+    socket.emit('get-new-activity');
+
     return (
         <div>
             <h1>All Activities</h1>
@@ -32,10 +42,3 @@ function AllActivitiesPage(){
 }
 
 export default AllActivitiesPage;
-
-/*{[<li>Item1</li>,<li>Item2</li>]}
-<ul>
-{DUMMY_DATA.map((meetup)=>{
-    return <li key={meetup.id}>{meetup.title}</li>
-})}
-</ul>*/
