@@ -1,16 +1,26 @@
 import classes from './LoginModal.module.css'
-import React from "react"
+import React, { useEffect, useState } from 'react'
 import { io } from "socket.io-client";
-
-let socket = io('https://localhost:3001');
 
 function LoginModal(props){
     let textInput = React.createRef();
+    // This doesn't work
+    useEffect(() => {
+        fetch("/login").then(
+            response => response.json()
+        ).then(
+            data => {
+                //setBackendData(data);
+                console.log(data);
+            }
+        )
+    }, [])
 
     function confirmHandler(){
         props.onLogin();
-        //FOR BACKEND - login request containing username from UI
-        socket.emit('login-request', textInput.current.value);
+        
+
+        console.log('sent login-request');
 
         //Not certain if this is the correct place for the response event
         //Leaning towards no will likely have to be outside the scope of a function

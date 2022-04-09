@@ -2,7 +2,7 @@
 import ActivityList from "../components/activities/ActivityList";
 import { io } from "socket.io-client";
 
-let socket = io('https://localhost:3001');
+//let socket = io('https://localhost:3001');
 
 /*socket.on('get-new-activity-response', (activityList) =>{
     //TO DO store activity list in a const similar to dummy data to be displayed on discover page
@@ -31,7 +31,7 @@ const DUMMY_DATA = [{
 /*Page loaded by router*/
 function AllActivitiesPage(){
     //Request for activity list to be displayed on discover page
-    socket.emit('get-new-activity');
+    //socket.emit('get-new-activity');
 
     return (
         <div>
