@@ -4,8 +4,21 @@ import LoginPage from "./pages/Login";
 import AllActivitiesPage from "./pages/AllActivities";
 import FavActivities from "./pages/FavActivities";
 import Layout from './components/layout/Layout'
+import React, { useEffect, useState } from 'react'
 
 function App() {
+
+  // This works
+  useEffect(() => {
+    fetch("/login").then(
+        response => response.json()
+    ).then(
+        data => {
+            //setBackendData(data);
+            console.log(data);
+        }
+    )
+  }, [])
 
   return (
     <Layout>
