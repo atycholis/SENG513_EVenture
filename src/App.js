@@ -8,18 +8,6 @@ import React, { useEffect, useState } from 'react'
 
 function App() {
 
-  // This works
-  useEffect(() => {
-    fetch("/login").then(
-        response => response.json()
-    ).then(
-        data => {
-            //setBackendData(data);
-            console.log(data);
-        }
-    )
-  }, [])
-
   return (
     <Layout>
         <Routes>
