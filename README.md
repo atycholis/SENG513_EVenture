@@ -53,7 +53,7 @@ Then, from your shell, clone the js-starter repository:
 
 Open Mongo Compass that you installed earlier
 You can connect to the database by using:
-mongodb+srv://SENG:513>@cluster0.a7uvh.mongodb.net/test
+mongodb+srv://SENG:513@cluster0.a7uvh.mongodb.net/test
 in Mongo Compass.
 
 (If prompted for username and password, Username: SENG || Password: 513)
