@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import LoginPage from "./pages/Login";
 import AllActivitiesPage from "./pages/AllActivities";
 import FavActivities from "./pages/FavActivities";
+import Friends from "./pages/Friends";
 import Layout from './components/layout/Layout'
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
             <Route path={'/'} element={<LoginPage />}/>
             <Route path={'/discover'} element={<AllActivitiesPage />}/>
             <Route path={'/favorites'} element={<FavActivities />}/>
+            <Route path={'/friends'} element={<Friends />}/>
         </Routes>
     </Layout>
   );
