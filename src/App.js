@@ -6,7 +6,6 @@ import FavActivities from "./pages/FavActivities";
 import Friends from "./pages/Friends";
 import Layout from './components/layout/Layout'
 import React, { useEffect, useState } from 'react'
-import axios from "axios";
 //const [username, setUsername] = useState("");
 function App() {
   return (

@@ -10,7 +10,7 @@ import React, { useEffect, useState } from 'react'
 });*/
 
 //TO BE REPLACED BY DATA FROM BE
-const DUMMY_DATA = [{
+let DUMMY_DATA = [{
     id: 'm1',
     title: 'The Batman',
     image:
@@ -37,13 +37,13 @@ function AllActivitiesPage(){
 
     useEffect(() => {
         if (true) {
-            console.log('if activity');
             fetch("/newActivity/" + "Jedediah").then(
                 response => response.json()
             ).then(
                 data => {
                     console.log(data);
-                    console.log('new activity request complete');
+                    DUMMY_DATA.push(data);
+                    setActivity(false);
                 }
             )
         }

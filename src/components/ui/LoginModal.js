@@ -2,7 +2,6 @@ import classes from './LoginModal.module.css'
 import React, { useEffect, useState } from 'react'
 import { io } from "socket.io-client";
 import {Link} from "react-router-dom";
-import axios from "axios";
 
 function LoginModal(props){
     let textInput = React.createRef();
