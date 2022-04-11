@@ -1,5 +1,13 @@
 /*All activities*/
-import ActivityList from "../components/meetups/ActivityList";
+import ActivityList from "../components/activities/ActivityList";
+import { io } from "socket.io-client";
+import React, { useEffect, useState } from 'react'
+
+//let socket = io('https://localhost:3001');
+
+/*socket.on('get-new-activity-response', (activityList) =>{
+    //TO DO store activity list in a const similar to dummy data to be displayed on discover page
+});*/
 
 //TO BE REPLACED BY DATA FROM BE
 const DUMMY_DATA = [{
@@ -23,6 +31,24 @@ const DUMMY_DATA = [{
 
 /*Page loaded by router*/
 function AllActivitiesPage(){
+    const [activity, setActivity] = useState(true);
+
+    console.log('aosdjfoasjdf');
+
+    useEffect(() => {
+        if (true) {
+            console.log('if activity');
+            fetch("/newActivity/" + "Jedediah").then(
+                response => response.json()
+            ).then(
+                data => {
+                    console.log(data);
+                    console.log('new activity request complete');
+                }
+            )
+        }
+    }, [])
+
     return (
         <div>
             <h1>All Activities</h1>
@@ -32,10 +58,3 @@ function AllActivitiesPage(){
 }
 
 export default AllActivitiesPage;
-
-/*{[<li>Item1</li>,<li>Item2</li>]}
-<ul>
-{DUMMY_DATA.map((meetup)=>{
-    return <li key={meetup.id}>{meetup.title}</li>
-})}
-</ul>*/

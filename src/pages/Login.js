@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import LoginModal from "../components/ui/LoginModal";
 import LoginBackdrop from "../components/ui/LoginBackdrop";
 import classes from "../components/ui/Login.module.css";
@@ -7,7 +7,7 @@ import classes from "../components/ui/Login.module.css";
 function LoginPage(){
     //react hook that can only be called in component function
     const [ loginIsOpen, setLoginIsOpen ] = useState(true);
-
+    
     function loginHandler(){
         setLoginIsOpen(false);
     }

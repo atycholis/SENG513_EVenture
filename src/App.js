@@ -4,6 +4,7 @@ import LoginPage from "./pages/Login";
 import AllActivitiesPage from "./pages/AllActivities";
 import FavActivities from "./pages/FavActivities";
 import Layout from './components/layout/Layout'
+import React, { useEffect, useState } from 'react'
 
 function App() {
 
