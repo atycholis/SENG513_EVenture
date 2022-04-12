@@ -1,6 +1,7 @@
 import ChatsList from "../components/activities/ChatsList";
 import OpenChat from "../components/activities/OpenChat";
 import FriendsList from "../components/activities/FriendsList";
+import Msg from "../components/activities/Msg";
 
 const DUMMY_CHATS_LIST = [{
     message: "Hello this is a chat",
@@ -50,7 +51,7 @@ function Friends(){
             <ChatsList chats={DUMMY_CHATS_LIST} />
             <FriendsList friends={DUMMY_FRIENDS_LIST} />
             <OpenChat chat={DUMMY_CHAT}/>
-
+            <Msg/>
         </div>
     );
 }
