@@ -7,7 +7,7 @@ import classes from "../components/ui/Login.module.css";
 function LoginPage(){
     //react hook that can only be called in component function
     const [ loginIsOpen, setLoginIsOpen ] = useState(true);
-    
+    let name = "null";
     function loginHandler(){
         setLoginIsOpen(false);
     }
@@ -15,6 +15,7 @@ function LoginPage(){
     return (
         <div className={classes.login}>
             <ul className={classes.flex_container}>
+                
                 <li>
                     <h5>Step 1 Like Activities</h5>
                     <div className={classes.container}>
