@@ -7,13 +7,15 @@ const DUMMY_CHATS_LIST = [{
     message: "Hello this is a chat",
     sender: "Brandon",
     time: "6:01pm",
-    chatID: "1"
+    chatID: "1",
+    active: "true"
 },
 {
     message: "I want to see Batman! This is an example of a reaaaaaaaaaaaaaally looooooong chat message. This is to test if a preview works or if it doesn't.",
     sender: "Jed",
     time: "3:02pm",
-    chatID: "2"
+    chatID: "2",
+    active: "false"
 },
     ]
 
