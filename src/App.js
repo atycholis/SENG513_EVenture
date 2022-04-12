@@ -1,5 +1,5 @@
 /*Defines different paths in the URL we want to listen to & which component should be loaded for these different paths */
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route} from "react-router-dom";
 import LoginPage from "./pages/Login";
 import AllActivitiesPage from "./pages/AllActivities";
 import FavActivities from "./pages/FavActivities";
