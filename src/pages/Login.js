@@ -15,7 +15,6 @@ function LoginPage(){
     return (
         <div className={classes.login}>
             <ul className={classes.flex_container}>
-                
                 <li>
                     <h5>Step 1 Like Activities</h5>
                     <div className={classes.container}>

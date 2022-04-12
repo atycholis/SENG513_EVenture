@@ -2,6 +2,7 @@ import classes from './LoginModal.module.css'
 import React, { useEffect, useState } from 'react'
 import { io } from "socket.io-client";
 import {Link} from "react-router-dom";
+import axios from "axios";
 
 function LoginModal(props){
     let textInput = React.createRef();
@@ -17,8 +18,8 @@ function LoginModal(props){
                 data => {
                     console.log('login request complete');
                     console.log(data);
+                    localStorage.setItem('currentUser', JSON.stringify(data));
                     props.onLogin();
-                    name = textInput.current.value;
                 }
             )
         }

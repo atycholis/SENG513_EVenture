@@ -3,21 +3,19 @@ import Card from '../ui/Card'
 
 function addToFavourites(activity, id)
 {
-    if(document.getElementById(id).innerText==="To Favorites")
-    {    
-        alert ("Added " + activity + " to favorites.");
-        document.getElementById(id).innerText="Remove Favorite";
-    }
-    else
-    {
-        alert ("Removed " + activity + " from favorites.");
-        document.getElementById(id).innerText="To Favorites";
-    }
+    //TODO: Add activity to favourites
+}
+
+function addToDislikes(activity, id)
+{
+    //TODO: Add activity to dislikes
 }
 
 function ActivityItem(props){
-    let buttonText = "To Favorites";
+    const likeID = props.id + "like";
+    const dislikeID = props.id + "dislike"; 
     return (
+        
         <li className={classes.item}>
             <Card>
                 <div className={classes.image}>
@@ -29,7 +27,8 @@ function ActivityItem(props){
                     <p>{props.description}</p>
                 </div>
                 <div className={classes.actions}>
-                    <button id={props.id} onClick={() => {addToFavourites(props.title, props.id)}}>{buttonText}</button>
+                    <button id={likeID} onClick={() => {addToFavourites(props.title, props.id)}}>{"Like"}</button>
+                    <button id={dislikeID} onClick={() => {addToDislikes(props.title, props.id)}}>{"Dislike"}</button>
                 </div>
             </Card>
         </li>
