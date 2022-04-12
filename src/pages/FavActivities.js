@@ -14,9 +14,10 @@ const DUMMY_DATA = [{
 
 /*Page loaded by router*/
 function FavActivitiesPage(){
+    const user = JSON.parse(localStorage.getItem('currentUser'));
     return (
         <div>
-            <h1>My Favourite Activities</h1>
+            <h1>{user.username}'s Favourite Activities</h1>
             <FavActivityList activities={DUMMY_DATA} />
         </div>
     );

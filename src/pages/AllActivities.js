@@ -33,7 +33,7 @@ const DUMMY_DATA = [{
 function AllActivitiesPage(){
     const [activity, setActivity] = useState(true);
 
-    console.log('aosdjfoasjdf');
+    const user = JSON.parse(localStorage.getItem('currentUser'));
 
     useEffect(() => {
         if (true) {
@@ -51,7 +51,7 @@ function AllActivitiesPage(){
 
     return (
         <div>
-            <h1>All Activities</h1>
+            <h1>Rate Activities For {user.username}</h1>
             <ActivityList activities={DUMMY_DATA} />
         </div>
     );
