@@ -492,4 +492,3 @@ runGetActivities();
 // runSendFriendRequest('Annelyse', 'Gary');
 // runAcceptFriendRequest('Gary', 'Annelyse');
 // runSendChat('Gary', 'Annelyse', 'Who are you');
-No newline at end of file
