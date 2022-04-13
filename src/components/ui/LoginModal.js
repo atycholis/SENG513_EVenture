@@ -17,7 +17,7 @@ function LoginModal(props){
                 data => {
                     console.log('login request complete');
                     console.log(data);
-                    localStorage.setItem('currentUser', JSON.stringify(data));
+                    localStorage.setItem('currentUser', JSON.stringify(data.user));
                     props.onLogin();
                 }
             )
