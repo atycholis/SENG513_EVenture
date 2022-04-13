@@ -42,6 +42,18 @@ app.get("/newActivity/:user", (req, res) => {
   res.json(data);
 })
 
+app.get("/friends/:user", (req, res) => {
+  console.log('friends' + req.params.user);
+
+  data = {};
+
+  getUser(req.params.user).then((data) => {
+    console.log(data);
+  });
+
+  res.json(data);
+})
+
 /*******************************************************************
  * Setup message handlers
  ******************************************************************/
