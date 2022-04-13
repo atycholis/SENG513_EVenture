@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react'
 const DUMMY_CHATS_LIST = [{
     active: "true",
     i: "0",
+    name: "Brandon",
     messages: [{
         message: "Hello this is a chat",
         sender: "Brandon",
@@ -27,6 +28,7 @@ const DUMMY_CHATS_LIST = [{
 {
     active: "false",
     i: "1",
+    name: "Jed",
     messages: [{
         message: "I want to see Batman! This is an example of a reaaaaaaaaaaaaaally looooooong chat message. This is to test if a preview works or if it doesn't.",
         sender: "Jed",
@@ -43,23 +45,12 @@ const DUMMY_CHATS_LIST = [{
 },
     ]
 
-
-
-    const DUMMY_FRIENDS_LIST = [{
-        name: "Brandon"
-    },
-    {
-        name: "Jed"
-    },
-    ]
 /*Page loaded by router*/
 function Friends(){
     return (
         <div>
             <h1>My Friends and Groups</h1>
-            <FriendsList friends={DUMMY_FRIENDS_LIST} />
-            <ChatsList chats={DUMMY_CHATS_LIST} />
-            
+            <ChatsList chats={DUMMY_CHATS_LIST} />      
         </div>
     );
 }
