@@ -10,19 +10,19 @@ const DUMMY_CHATS_LIST = [{
         message: "Hello this is a chat",
         sender: "Brandon",
         time: "6:01pm",
-        chatID: "1"
+        
     },
     {
     message: "Hey Brandon, what's popping king?",
     sender: "Joel",
     time: "6:03pm",
-    chatID: "3"
+    
     },
     {
     message: "Not much, just chilling.",
     sender: "Brandon",
     time: "6:09pm",
-    chatID: "4"
+    
     },]
 },
 {
@@ -33,13 +33,13 @@ const DUMMY_CHATS_LIST = [{
         message: "I want to see Batman! This is an example of a reaaaaaaaaaaaaaally looooooong chat message. This is to test if a preview works or if it doesn't.",
         sender: "Jed",
         time: "3:02pm",
-        chatID: "2"
+   
     },
     {
     message: "Ok",
     sender: "Joel",
     time: "3:03pm",
-    chatID: "5"
+   
     },
   ]
 },
