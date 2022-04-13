@@ -1,52 +1,26 @@
 const MongoClient = require('mongodb').MongoClient;
 
-module.exports = function() {
-  
-  // Takes in username and returns full user obj as promise.
-  // USAGE: getUser('<username>')
-  // Returns user object
-  getUser = async function (username) {
-    const client = new MongoClient(
-      'mongodb+srv://SENG:513@cluster0.a7uvh.mongodb.net/test');
-    try {
-      await client.connect();
-      const database = client.db("513");
-      const coll = database.collection("users");
-      return await coll.findOne({
-        'username': username
-      });
-    } finally {
-      await client.close();
-    }
+
+
+
+// Takes in username and returns full user obj as promise.
+// USAGE: getUser('<username>')
+// Returns user object
+async function getUser(username) {
+  const client = new MongoClient(
+    'mongodb+srv://SENG:513@cluster0.a7uvh.mongodb.net/test');
+  try {
+    await client.connect();
+    const database = client.db("513");
+    const coll = database.collection("users");
+    return await coll.findOne({
+      'username': username
+    });
+  } finally {
+    await client.close();
   }
+}
 
-<<<<<<< HEAD
-
-  // Takes in username, creates new user
-  // throws error if username already exists
-  //USAGE: addUser('<username>');
-  addUser = async function (username) {
-    const client = new MongoClient(
-      'mongodb+srv://SENG:513@cluster0.a7uvh.mongodb.net/test');
-    try {
-      await client.connect();
-      const database = client.db("513");
-      const usersCollection = database.collection("users");
-      const exists = await usersCollection.find({
-        'username': username
-      }).hasNext();
-
-      if (exists)
-        throw '\nUSERNAME TAKEN\n';
-      else {
-        var index = await usersCollection.count();
-        await usersCollection.insertOne({
-          "id": index,
-          "username": username,
-          "likedActivities": [],
-          "dislikedActivities": []
-        })
-=======
 async function getActivities() {
   const client = new MongoClient(
     'mongodb+srv://SENG:513@cluster0.a7uvh.mongodb.net/test', {
@@ -83,66 +57,31 @@ async function getAllActivities(username) {
     return await usersCollection.aggregate([{
       '$match': {
         'username': username
->>>>>>> backend-fixes
       }
-    } catch (err) {
-      console.log(err);
-      return false
+    }, {
+      '$lookup': {
+        'from': 'activities',
+        'localField': 'activities.likedActivities',
+        'foreignField': 'id',
+        'as': 'likedActivityArray'
+      }
+    }, {
+      '$lookup': {
+        'from': 'activities',
+        'localField': 'activities.dislikedActivities',
+        'foreignField': 'id',
+        'as': 'dislikedActivityArray'
+      }
+    }, {
+      '$unset': [
+        '_id', 'id', 'username', 'activities', 'friends'
+      ]
+    }, ]).toArray();
 
-    } finally {
-      await client.close();
-    }
+
+  } finally {
+    await client.close();
   }
-
-  // Takes in username and returns activities liked and disliked
-  // USAGE: getAllActivities('<username>')
-  // returns array of activities
-  getAllActivities = async function (username) {
-
-    const client = new MongoClient(
-      'mongodb+srv://SENG:513@cluster0.a7uvh.mongodb.net/test', {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-      });
-    try {
-      await client.connect();
-      const database = client.db("513");
-      const usersCollection = database.collection("users");
-      const userInfo = await usersCollection.findOne({
-        'username': username
-      });
-      return await usersCollection.aggregate([{
-        '$match': {
-          'username': 'Tarnished'
-        }
-      }, {
-        '$lookup': {
-          'from': 'activities',
-          'localField': 'activities.likedActivities',
-          'foreignField': 'id',
-          'as': 'likedActivityArray'
-        }
-      }, {
-        '$lookup': {
-          'from': 'activities',
-          'localField': 'activities.dislikedActivities',
-          'foreignField': 'id',
-          'as': 'dislikedActivityArray'
-        }
-      }, {
-        '$unset': [
-          '_id', 'id', 'username', 'activities', 'friends'
-        ]
-      }, ]).toArray();
-
-
-    } finally {
-      await client.close();
-    }
-  }
-
-
-
 }
 
 // Takes in username, activityID and activityEvaluation and sets the user information in the DB accordingly
@@ -202,6 +141,40 @@ async function setUserActivityEval(username, activityID, activityEval) {
     return await usersCollection.findOne({
       'username': username
     })
+  } finally {
+    await client.close();
+  }
+}
+
+// Takes in username, creates new user
+// throws error if username already exists
+//USAGE: addUser('<username>');
+async function addUser(username) {
+  const client = new MongoClient(
+    'mongodb+srv://SENG:513@cluster0.a7uvh.mongodb.net/test');
+  try {
+    await client.connect();
+    const database = client.db("513");
+    const usersCollection = database.collection("users");
+    const exists = await usersCollection.find({
+      'username': username
+    }).hasNext();
+
+    if (exists)
+      throw '\nUSERNAME TAKEN\n';
+    else {
+      var index = await usersCollection.count();
+      await usersCollection.insertOne({
+        "id": index,
+        "username": username,
+        "likedActivities": [],
+        "dislikedActivities": []
+      })
+    }
+  } catch (err) {
+    console.log(err);
+    return false
+
   } finally {
     await client.close();
   }
