@@ -8,21 +8,7 @@ function LoginPage(){
     //react hook that can only be called in component function
     const [ loginIsOpen, setLoginIsOpen ] = useState(true);
     
-    
     function loginHandler(){
-
-        // This doesn't work
-        useEffect(() => {
-            fetch("/login").then(
-                response => response.json()
-            ).then(
-                data => {
-                    //setBackendData(data);
-                    console.log(data);
-                }
-            )
-        }, [])
-
         setLoginIsOpen(false);
     }
 

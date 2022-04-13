@@ -1,6 +1,7 @@
 /*All activities*/
 import ActivityList from "../components/activities/ActivityList";
 import { io } from "socket.io-client";
+import React, { useEffect, useState } from 'react'
 
 //let socket = io('https://localhost:3001');
 
@@ -30,8 +31,23 @@ const DUMMY_DATA = [{
 
 /*Page loaded by router*/
 function AllActivitiesPage(){
-    //Request for activity list to be displayed on discover page
-    //socket.emit('get-new-activity');
+    const [activity, setActivity] = useState(true);
+
+    console.log('aosdjfoasjdf');
+
+    useEffect(() => {
+        if (true) {
+            console.log('if activity');
+            fetch("/newActivity/" + "Jedediah").then(
+                response => response.json()
+            ).then(
+                data => {
+                    console.log(data);
+                    console.log('new activity request complete');
+                }
+            )
+        }
+    }, [])
 
     return (
         <div>
