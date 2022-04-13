@@ -35,7 +35,7 @@ function AllActivitiesPage(){
     const user = JSON.parse(localStorage.getItem('currentUser'));
     useEffect(() => {
         if (true) {
-            fetch("/newActivity/" + "Jedediah").then(
+            fetch("/newActivity/" + user.username).then(
                 response => response.json()
             ).then(
                 data => {

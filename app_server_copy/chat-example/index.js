@@ -1,3 +1,4 @@
+const { getCardHeaderUtilityClass } = require('@mui/material');
 const express = require('express');
 const path = require('path');
 const app = express();
@@ -44,15 +45,38 @@ app.get("/newActivity/:user", (req, res) => {
 
 app.get("/friends/:user", (req, res) => {
   console.log('friends' + req.params.user);
+  username = req.params.user;
+  response_data = {};
 
-  data = {};
+  response_data.chats = [];
 
-  getUser(req.params.user).then((data) => {
-    console.log(data);
-  });
+  (async() => {
+    user = await mygetUser(req.params.user);
+    console.log(user);
 
-  res.json(data);
+    for(let i = 0; i < user.friends.friendsList.length; ++i) {
+      friend = user.friends.friendsList[i];
+      console.log(friend);
+
+      let chats = await mygetChat(username, friend);
+      console.log(chats);
+      chat_data = {};
+      chat_data.friend = friend;
+      chat_data.chat = chats;
+      response_data.chats.push(chat_data);
+    }
+
+    res.json(response_data);
+  })();
 })
+
+function mygetChat(username, friend) {
+  return getChat(username, friend);
+}
+
+function mygetUser(username) {
+  return getUser(username);
+}
 
 /*******************************************************************
  * Setup message handlers
