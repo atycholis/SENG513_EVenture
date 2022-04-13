@@ -26,7 +26,7 @@ function LoginModal(props){
 
     return(
         <div className={classes.modal}>
-            <h4 className={classes.modal_text}>Welcome to eVenture! <br/> An activity Planning Web Application</h4>
+            <h4 className={classes.modal_text}>Welcome to eVenture! <br/> A Gaming Activity-Planning Web Application</h4>
             <p className={classes.p}>Login using an existing nickname, or create a new one.</p>
             <input ref={textInput} autoComplete={'off'}/><button onClick={() => setLogin(true)}>Login</button>
         </div>

@@ -1,5 +1,4 @@
 import ChatsList from "../components/activities/ChatsList";
-import FriendsList from "../components/activities/FriendsList";
 import React, { useEffect, useState } from 'react'
 
 const DUMMY_CHATS_LIST = [{
@@ -49,7 +48,7 @@ const DUMMY_CHATS_LIST = [{
 function Friends(){
     return (
         <div>
-            <h1>My Friends and Groups</h1>
+            <h1>My Friends and Chats</h1>
             <ChatsList chats={DUMMY_CHATS_LIST} />      
         </div>
     );
