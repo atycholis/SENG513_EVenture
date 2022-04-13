@@ -18,16 +18,9 @@ function FavActivitiesPage(){
     return (
         <div>
             <h1>{user.username}'s Favourite Games</h1>
-            <FavActivityList activities={DUMMY_DATA} />
+            <FavActivityList activities={user.likedActivites} />
         </div>
     );
 }
 
 export default FavActivitiesPage;
-
-/*{[<li>Item1</li>,<li>Item2</li>]}
-<ul>
-{DUMMY_DATA.map((meetup)=>{
-    return <li key={meetup.id}>{meetup.title}</li>
-})}
-</ul>*/

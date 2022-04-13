@@ -6,6 +6,7 @@ import Msg from "./Msg";
 import ActivityModal from "../ui/ActivityModal";
 import FriendCard from '../ui/FriendCard.js'
 import Friend from './Friend'
+import AddFriend from './AddFriend.js';
 import classes from './ChatList.module.css'
 
 function ChatsList(props){
@@ -29,12 +30,12 @@ function ChatsList(props){
             {props.chats.map(friend => (
                 <div className={classes.actions}>
                 <Friend
-                friend={friend.name}
+                friend={friend.friend}
                 />   
                 <button id="open-button" onClick={() => {setActivityIsOpen(true)}}>See Mutual Activities</button>
                 </div>
             ))}
-            
+            <AddFriend/>
         </ul>
         </FriendCard>
         <ul className={"ChatsList"}>
@@ -51,10 +52,9 @@ function ChatsList(props){
                 </Card>
                 </div>
             ))}
-
-                
                 <OpenChat chat={props.chats.at(activeChat).messages}/>
                 <Msg/>
+                
         </ul>
         {activityIsOpen && <ActivityModal onActivity={activeHandler}/>}
         </div>

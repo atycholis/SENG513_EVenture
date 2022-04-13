@@ -5,7 +5,6 @@ import {Link} from "react-router-dom";
 
 function LoginModal(props){
     let textInput = React.createRef();
-    let name = "null";
     const [login, setLogin] = useState();
     
 

@@ -13,7 +13,6 @@ function ActivityModal(props){
                 response => response.json()
             ).then(
                 data => {
-                    console.log(data);
                     mutualActivities = data;
                 }
             )

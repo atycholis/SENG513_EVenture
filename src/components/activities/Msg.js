@@ -4,15 +4,16 @@ import classes from './Msg.module.css'
 
 function sendMessage(msg)
 {
-    //TODO seng message to chat
+    console.log(msg);
+    document.getElementById('sendmsg').value = "";
 }
 
 function Msg(){
     return (
         <div className={classes.actions}>
             <Card>
-                <TextField id="outlined-basic" label="Message" variant="outlined" />
-                <button id="msg-button" onClick={() => {sendMessage(document.getElementById('outlined-basic').value)}}>Send</button>
+                <TextField id="sendmsg" label="Message" variant="outlined" />
+                <button id="msg-button" onClick={() => {sendMessage(document.getElementById('sendmsg').value)}}>Send</button>
             </Card>
         </div>
     );
