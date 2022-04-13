@@ -49,7 +49,7 @@ function AllActivitiesPage(){
 
     return (
         <div>
-            <h1>Rate Activities For {user.username}</h1>
+            <h1>Rate Games For {user.username}</h1>
             <ActivityList activities={DUMMY_DATA} />
         </div>
     );
