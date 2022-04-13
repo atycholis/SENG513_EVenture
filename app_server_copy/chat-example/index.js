@@ -16,10 +16,12 @@ app.get("/login/:user", (req, res) => {
       addUser(req.params.user).then((success) => {
         console.log('user creation ' + success);
       });
-      res.json({'success' : true, 'username' : req.params.user});
+      getUser(req.params.user).then((user) => {
+        res.json({'success' : true, 'user' : user});
+      });
     } else {
       console.log(user);
-      res.json({'success' : true, 'username' : user});
+      res.json({'success' : true, 'user' : user});
     }
   }); 
 

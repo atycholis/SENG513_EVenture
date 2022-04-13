@@ -32,9 +32,7 @@ let DUMMY_DATA = [{
 /*Page loaded by router*/
 function AllActivitiesPage(){
     const [activity, setActivity] = useState(true);
-
     const user = JSON.parse(localStorage.getItem('currentUser'));
-
     useEffect(() => {
         if (true) {
             fetch("/newActivity/" + "Jedediah").then(
