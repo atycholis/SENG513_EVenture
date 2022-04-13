@@ -21,6 +21,22 @@ async function getUser(username) {
   }
 }
 
+async function getActivities() {
+  const client = new MongoClient(
+    'mongodb+srv://SENG:513@cluster0.a7uvh.mongodb.net/test', {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    });
+  try {
+    await client.connect();
+    const database = client.db("513");
+    const activitiesCollection = database.collection("activities");
+    return await activitiesCollection.find().toArray();
+  } finally {
+    await client.close();
+  }
+}
+
 // Takes in username and returns activities liked and disliked
 // USAGE: getAllActivities('<username>')
 // returns array of activities
@@ -40,7 +56,7 @@ async function getAllActivities(username) {
     });
     return await usersCollection.aggregate([{
       '$match': {
-        'username': 'Tarnished'
+        'username': username
       }
     }, {
       '$lookup': {
@@ -459,10 +475,14 @@ async function runSendChat(sentBy, sentTo, message) {
   console.log("\sendChat...");
   console.log(result);
 }
+async function runGetActivities() {
+  const result = await getActivities();
+  console.log(result);
 
+}
 //////////////////////TO RUN: node helperDB.js//////////////////////////
 //uncomment below to test
-
+runGetActivities();
 // getDB();
 // runGetUser('Brandon');
 // runGetAllActivities('Brandon');
